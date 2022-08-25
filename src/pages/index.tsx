@@ -6,8 +6,7 @@ import type {
 import Head from 'next/head'
 import { trpc } from '../utils/trpc'
 import { signOut, useSession } from 'next-auth/react'
-import { unstable_getServerSession } from 'next-auth'
-import { authOptions as NextAuthOptions } from './api/auth/[...nextauth]'
+import { getTweetLightSession } from '../utils/getTweetLightSession'
 
 const Home: NextPage = () => {
   const hello = trpc.useQuery(['auth.getSession'])
@@ -25,11 +24,7 @@ const Home: NextPage = () => {
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
-  const session = await unstable_getServerSession(
-    ctx.req,
-    ctx.res,
-    NextAuthOptions
-  )
+  const session = await getTweetLightSession(ctx)
 
   if (!session) {
     return {

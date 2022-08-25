@@ -1,7 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
-import { unstable_getServerSession } from 'next-auth'
 import { signIn } from 'next-auth/react'
-import { authOptions as NextAuthOptions } from './api/auth/[...nextauth]'
+import { getTweetLightSession } from '../utils/getTweetLightSession'
 
 const Login: NextPage = () => {
   return (
@@ -15,11 +14,7 @@ const Login: NextPage = () => {
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
-  const session = await unstable_getServerSession(
-    ctx.req,
-    ctx.res,
-    NextAuthOptions
-  )
+  const session = await getTweetLightSession(ctx)
 
   if (session) {
     return {
