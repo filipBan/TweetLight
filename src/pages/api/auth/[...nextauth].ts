@@ -9,7 +9,13 @@ import { env } from '../../../env/server.mjs'
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    session({ session }) {
+    session({ session, user }) {
+      if (session && user) {
+        return {
+          ...session,
+          user,
+        }
+      }
       return session
     },
   },

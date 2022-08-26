@@ -1,12 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import type {
   GetServerSideProps,
   GetServerSidePropsContext,
   NextPage,
 } from 'next'
 import Head from 'next/head'
-import { trpc } from '@/utils/trpc'
 import { signOut, useSession } from 'next-auth/react'
-import Image from 'next/image'
 
 import { getTweetLightSession } from '@/utils/getTweetLightSession'
 import { NewTweet } from '@/components/NewTweet'
@@ -14,13 +13,11 @@ import { NewTweet } from '@/components/NewTweet'
 const Home: NextPage = () => {
   // const hello = trpc.useQuery(['auth.getSession'])
 
-  // const { data: session } = useSession()
+  const { data: session } = useSession()
 
-  // console.log(session)
-
-  // if (!session || !session.user) {
-  //   return null
-  // }
+  if (!session || !session.user) {
+    return null
+  }
 
   return (
     <>
@@ -43,35 +40,37 @@ const Home: NextPage = () => {
             <div>Here go tweets</div>
           </div>
         </section>
-        {/* Signed in as {session?.user?.email} <br />
+        Signed in as {session?.user?.email} <br />
         <button onClick={() => signOut()}>Sign out</button>
         <img
           src={session.user.image!}
           alt="Profile pic"
           width={100}
           height={100}
-        /> */}
+        />
       </main>
     </>
   )
 }
 
-// export const getServerSideProps: GetServerSideProps = async (
-//   ctx: GetServerSidePropsContext
-// ) => {
-//   const session = await getTweetLightSession(ctx)
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext
+) => {
+  const session = await getTweetLightSession(ctx)
 
-//   if (!session) {
-//     return {
-//       redirect: { destination: '/login', permanent: false },
-//     }
-//   }
+  console.log('Session SSR: ', session)
 
-//   return {
-//     props: {
-//       session,
-//     },
-//   }
-// }
+  if (!session) {
+    return {
+      redirect: { destination: '/login', permanent: false },
+    }
+  }
+
+  return {
+    props: {
+      session,
+    },
+  }
+}
 
 export default Home
