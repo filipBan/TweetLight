@@ -9,10 +9,9 @@ import { signOut, useSession } from 'next-auth/react'
 
 import { getTweetLightSession } from '@/utils/getTweetLightSession'
 import { NewTweet } from '@/components/NewTweet'
+import ListOfTweets from '@/components/ListOfTweets'
 
 const Home: NextPage = () => {
-  // const hello = trpc.useQuery(['auth.getSession'])
-
   const { data: session } = useSession()
 
   if (!session || !session.user) {
@@ -28,26 +27,20 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <nav className="border flex justify-center">
-          <div className="p-5 flex justify-between items-center w-full md:w-3/5 border">
-            <div>Logo</div>
+        <nav className="flex justify-center bg-slate-600">
+          <div className="flex justify-between items-center w-full md:w-3/5 py-5">
+            <div>TweetLight</div>
             <div>User</div>
           </div>
         </nav>
         <section className="flex justify-center">
           <div className="p-5 border w-full md:w-3/5">
             <NewTweet />
-            <div>Here go tweets</div>
+            <ListOfTweets />
           </div>
         </section>
         Signed in as {session?.user?.email} <br />
         <button onClick={() => signOut()}>Sign out</button>
-        <img
-          src={session.user.image!}
-          alt="Profile pic"
-          width={100}
-          height={100}
-        />
       </main>
     </>
   )
@@ -57,8 +50,6 @@ export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
   const session = await getTweetLightSession(ctx)
-
-  console.log('Session SSR: ', session)
 
   if (!session) {
     return {
