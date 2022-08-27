@@ -20,9 +20,18 @@ export const tweetRouter = createProtectedRouter()
   .query('getMyTweets', {
     async resolve({ ctx }) {
       const myTweets = await ctx.prisma.tweet.findMany({
-        orderBy: { createdAt: 'desc' },
         where: { userId: ctx.session.user.id },
-        include: { author: true },
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          author: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
       })
 
       return myTweets
