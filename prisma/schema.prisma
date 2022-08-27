@@ -51,6 +51,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     Tweet         Tweet[]
+    Like          Like[]
 }
 
 model VerificationToken {
@@ -66,5 +67,15 @@ model Tweet {
     content   String
     createdAt DateTime @default(now())
     author    User     @relation(fields: [userId], references: [id])
+    userId    String
+    Like      Like[]
+}
+
+model Like {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    tweet     Tweet    @relation(fields: [tweetId], references: [id])
+    tweetId   String
+    user      User     @relation(fields: [userId], references: [id])
     userId    String
 }
