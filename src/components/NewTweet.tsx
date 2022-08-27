@@ -1,10 +1,17 @@
 import { useState } from 'react'
 import { trpc } from '@/utils/trpc'
-import Image from 'next/image'
+import { LoadingSpinner } from './LoadingSpinner'
 
 export const NewTweet = () => {
   const [value, setValue] = useState('')
-  const { mutate, isLoading } = trpc.useMutation('tweet.newTweet')
+  const utils = trpc.useContext()
+
+  const { mutate, isLoading } = trpc.useMutation('tweet.newTweet', {
+    onSuccess() {
+      utils.invalidateQueries(['tweet.getMyTweets'])
+      setValue('')
+    },
+  })
 
   return (
     <div className="mb-4 flex flex-col items-end">
@@ -19,7 +26,7 @@ export const NewTweet = () => {
 
       <div className="border w-24 h-10 flex justify-center items-center">
         {isLoading ? (
-          <Image src="/puff.svg" width={30} height={30} alt="Loading spinner" />
+          <LoadingSpinner />
         ) : (
           <button
             onClick={() => mutate({ content: value })}

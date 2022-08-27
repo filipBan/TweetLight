@@ -33,8 +33,8 @@ const Home: NextPage = () => {
             <div>User</div>
           </div>
         </nav>
-        <section className="flex justify-center">
-          <div className="p-5 border w-full md:w-3/5">
+        <section className="flex justify-center py-10">
+          <div className="w-full md:w-3/5">
             <NewTweet />
             <ListOfTweets />
           </div>
