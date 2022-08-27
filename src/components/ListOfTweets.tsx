@@ -1,54 +1,16 @@
 import { trpc } from '@/utils/trpc'
+import { useLikeTweet } from '@/utils/useLikeTweet'
+import { useUnlikeTweet } from '@/utils/useUnlikeTweet'
 import { useSession } from 'next-auth/react'
 import { LikeButton } from './LikeButton'
 import { LoadingSpinner } from './LoadingSpinner'
 
 const ListOfTweets = () => {
   const { data: session } = useSession()
-  const utils = trpc.useContext()
 
   const { data, isLoading } = trpc.useQuery(['tweet.getMyTweets'])
-
-  const { mutate: likeTweet } = trpc.useMutation('tweet.likeTweet', {
-    onSuccess(data) {
-      const oldData = utils.getQueryData(['tweet.getMyTweets'])
-      if (oldData) {
-        const newData = oldData.map((item) => {
-          if (item.id === data.likedTweet.tweetId && session?.user?.id) {
-            return {
-              ...item,
-              likes: [...item.likes, { userId: session.user.id }],
-            }
-          }
-
-          return item
-        })
-
-        utils.setQueryData(['tweet.getMyTweets'], newData)
-      }
-    },
-  })
-
-  const { mutate: unlikeTweet } = trpc.useMutation('tweet.unlikeTweet', {
-    onSuccess(data) {
-      const oldData = utils.getQueryData(['tweet.getMyTweets'])
-      if (oldData) {
-        const newData = oldData.map((item) => {
-          if (item.id === data.unlikedTweet.tweetId) {
-            return {
-              ...item,
-              likes: item.likes.filter(
-                (like) => like.userId !== session?.user?.id
-              ),
-            }
-          }
-          return item
-        })
-
-        utils.setQueryData(['tweet.getMyTweets'], newData)
-      }
-    },
-  })
+  const { mutate: likeTweet } = useLikeTweet()
+  const { mutate: unlikeTweet } = useUnlikeTweet()
 
   return (
     <div className="flex flex-col justify-center">
