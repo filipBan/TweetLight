@@ -5,7 +5,7 @@ import type {
   NextPage,
 } from 'next'
 import Head from 'next/head'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 
 import { getTweetLightSession } from '@/utils/getTweetLightSession'
 import { NewTweet } from '@/components/NewTweet'
