@@ -10,6 +10,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { getTweetLightSession } from '@/utils/getTweetLightSession'
 import { NewTweet } from '@/components/NewTweet'
 import ListOfTweets from '@/components/ListOfTweets'
+import { NavBar } from '@/components/NavBar'
 
 const Home: NextPage = () => {
   const { data: session } = useSession()
@@ -27,20 +28,13 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <nav className="flex justify-center bg-slate-600">
-          <div className="flex justify-between items-center w-full md:w-3/5 py-5">
-            <div>TweetLight</div>
-            <div>User</div>
-          </div>
-        </nav>
+        <NavBar />
         <section className="flex justify-center py-10">
           <div className="w-full md:w-3/5">
             <NewTweet />
             <ListOfTweets />
           </div>
         </section>
-        Signed in as {session?.user?.email} <br />
-        <button onClick={() => signOut()}>Sign out</button>
       </main>
     </>
   )

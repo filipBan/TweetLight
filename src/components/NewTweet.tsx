@@ -17,7 +17,7 @@ export const NewTweet = () => {
     <div className="mb-4 flex flex-col items-end">
       <div className="border h-32 w-full mb-2">
         <textarea
-          className="w-full h-full bg-inherit p-2 outline-none"
+          className="w-full h-full bg-inherit p-2 outline-none resize-none"
           placeholder="What's up?"
           value={value}
           onChange={(e) => setValue(e.target.value)}
