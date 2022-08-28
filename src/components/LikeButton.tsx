@@ -1,10 +1,10 @@
-import { FC } from 'react'
+import { FC, MouseEvent } from 'react'
 import Image from 'next/image'
 
-export const LikeButton: FC<{ isLiked?: boolean; onClick?: () => void }> = ({
-  isLiked,
-  onClick,
-}) => {
+export const LikeButton: FC<{
+  isLiked?: boolean
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void
+}> = ({ isLiked, onClick }) => {
   return (
     <button onClick={onClick} className="w-5 h-5">
       <Image
