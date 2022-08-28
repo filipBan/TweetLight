@@ -6,11 +6,11 @@ export const useUnlikeTweet = () => {
   const { data: session } = useSession()
 
   return trpc.useMutation('tweet.unlikeTweet', {
-    onSuccess(data) {
+    onSuccess(unlikedTweet) {
       const oldData = utils.getQueryData(['tweet.getMyTweets'])
       if (oldData) {
         const newData = oldData.map((item) => {
-          if (item.id === data.unlikedTweet.tweetId) {
+          if (item.id === unlikedTweet.tweetId) {
             return {
               ...item,
               likes: item.likes.filter(

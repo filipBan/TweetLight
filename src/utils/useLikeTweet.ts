@@ -6,11 +6,11 @@ export const useLikeTweet = () => {
   const { data: session } = useSession()
 
   return trpc.useMutation('tweet.likeTweet', {
-    onSuccess(data) {
+    onSuccess(likedTweet) {
       const oldData = utils.getQueryData(['tweet.getMyTweets'])
       if (oldData) {
         const newData = oldData.map((item) => {
-          if (item.id === data.likedTweet.tweetId && session?.user?.id) {
+          if (item.id === likedTweet.tweetId && session?.user?.id) {
             return {
               ...item,
               likes: [...item.likes, { userId: session.user.id }],
