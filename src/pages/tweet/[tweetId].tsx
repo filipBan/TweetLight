@@ -13,20 +13,24 @@ const TweetReplies = () => {
     { tweetId: router.query.tweetId as string | undefined },
   ])
 
+  if (isLoading || !data) {
+    return (
+      <Page>
+        <LoadingSpinner />
+      </Page>
+    )
+  }
+
   return (
     <Page>
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <>
-          <div className="mb-4 w-full">
-            <Tweet key={data?.id} tweet={data} />
-          </div>
-          {data?.replies.map((tweet) => (
-            <Tweet key={tweet.id} tweet={tweet} />
-          ))}
-        </>
-      )}
+      <>
+        <div className="mb-4 w-full">
+          <Tweet key={data?.id} tweet={data} />
+        </div>
+        {data?.replies.map((tweet) => (
+          <Tweet key={tweet.id} tweet={tweet} />
+        ))}
+      </>
     </Page>
   )
 }
