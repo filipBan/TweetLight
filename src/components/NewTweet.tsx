@@ -12,15 +12,18 @@ export const NewTweet: FC<{
   const { mutate, isLoading } = trpc.useMutation('tweet.newTweet', {
     onSuccess() {
       utils.invalidateQueries(['tweet.getMyTweets'])
+      utils.invalidateQueries(['tweet.getTweetAndReplies'])
+
       setValue('')
       onReplySubmitted?.()
     },
   })
 
   return (
-    <div className="mb-4 flex flex-col items-end">
+    <div className="mb-4 flex flex-col items-end w-full">
       <div className="border h-32 w-full mb-2">
         <textarea
+          onClick={(e) => e.preventDefault()}
           className="w-full h-full bg-inherit p-2 outline-none resize-none"
           placeholder="What's up?"
           value={value}
@@ -33,7 +36,10 @@ export const NewTweet: FC<{
           <LoadingSpinner />
         ) : (
           <button
-            onClick={() => mutate({ content: value, replyParentId })}
+            onClick={(e) => {
+              e.preventDefault()
+              mutate({ content: value, replyParentId })
+            }}
             className="outline-none cursor-pointer h-10 w-24"
             disabled={isLoading}
           >

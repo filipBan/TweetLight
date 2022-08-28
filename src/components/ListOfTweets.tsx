@@ -6,7 +6,7 @@ const ListOfTweets = () => {
   const { data, isLoading } = trpc.useQuery(['tweet.getMyTweets'])
 
   return (
-    <div className="flex flex-col justify-center">
+    <div className="flex flex-col justify-center w-full">
       {isLoading ? (
         <LoadingSpinner />
       ) : (

@@ -16,7 +16,7 @@ export const tweetRouter = createProtectedRouter()
         },
       })
 
-      return { success: true, tweet: newTweet }
+      return newTweet
     },
   })
   .mutation('likeTweet', {
@@ -31,7 +31,7 @@ export const tweetRouter = createProtectedRouter()
         },
       })
 
-      return { success: true, likedTweet }
+      return likedTweet
     },
   })
   .mutation('unlikeTweet', {
@@ -48,7 +48,7 @@ export const tweetRouter = createProtectedRouter()
         },
       })
 
-      return { success: true, unlikedTweet }
+      return unlikedTweet
     },
   })
   .query('getMyTweets', {
@@ -80,5 +80,60 @@ export const tweetRouter = createProtectedRouter()
       })
 
       return myTweets
+    },
+  })
+  .query('getTweetAndReplies', {
+    input: z.object({
+      tweetId: z.optional(z.string()),
+    }),
+    async resolve({ ctx, input }) {
+      if (!input.tweetId) {
+        return
+      }
+
+      const tweet = await ctx.prisma.tweet.findUnique({
+        where: {
+          id: input.tweetId,
+        },
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          likes: true,
+          replies: {
+            orderBy: { createdAt: 'asc' },
+            select: {
+              id: true,
+              content: true,
+              createdAt: true,
+              likes: {
+                select: {
+                  userId: true,
+                },
+              },
+              author: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+              _count: {
+                select: {
+                  replies: true,
+                },
+              },
+            },
+          },
+          replyParent: true,
+          author: true,
+          _count: {
+            select: {
+              replies: true,
+            },
+          },
+        },
+      })
+
+      return tweet
     },
   })

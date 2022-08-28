@@ -29,7 +29,7 @@ export const Tweet: FC<{
 
   return (
     <Link href={`/tweet/${tweet.id}`}>
-      <a>
+      <a className="w-full">
         <div
           ref={ref}
           className="flex flex-col border p-4 items-start hover:bg-slate-800 cursor-pointer"
