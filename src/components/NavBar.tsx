@@ -12,7 +12,7 @@ export const NavBar = () => {
   }
 
   return (
-    <nav className="flex justify-center bg-slate-600 h-14">
+    <nav className="flex justify-center bg-slate-600 h-14 p-4 md:p-0">
       <div className="flex justify-between items-center w-full md:w-3/5 relative">
         <Link href="/">
           <a>TweetLight</a>

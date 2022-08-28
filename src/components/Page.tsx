@@ -13,7 +13,7 @@ export const Page: FC<PropsWithChildren> = ({ children }) => {
       <main>
         <NavBar />
         <div className="flex justify-center py-10">
-          <div className="w-full md:w-3/5 flex flex-col items-center">
+          <div className="w-full p-4 md:w-3/5 md:p-0 flex flex-col items-center">
             {children}
           </div>
         </div>
