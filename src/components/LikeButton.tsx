@@ -6,7 +6,7 @@ export const LikeButton: FC<{ isLiked?: boolean; onClick?: () => void }> = ({
   onClick,
 }) => {
   return (
-    <button onClick={onClick}>
+    <button onClick={onClick} className="w-5 h-5">
       <Image
         src={isLiked ? '/like-after.svg' : '/like-before.svg'}
         width={20}

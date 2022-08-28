@@ -5,12 +5,14 @@ export const tweetRouter = createProtectedRouter()
   .mutation('newTweet', {
     input: z.object({
       content: z.string(),
+      replyParentId: z.optional(z.string()),
     }),
     async resolve({ ctx, input }) {
       const newTweet = await ctx.prisma.tweet.create({
         data: {
           userId: ctx.session.user.id,
           content: input.content,
+          replyParentId: input.replyParentId ?? null,
         },
       })
 
@@ -52,7 +54,8 @@ export const tweetRouter = createProtectedRouter()
   .query('getMyTweets', {
     async resolve({ ctx }) {
       const myTweets = await ctx.prisma.tweet.findMany({
-        where: { userId: ctx.session.user.id },
+        where: { userId: ctx.session.user.id, replyParentId: null },
+        orderBy: { createdAt: 'asc' },
         select: {
           id: true,
           content: true,
@@ -66,6 +69,11 @@ export const tweetRouter = createProtectedRouter()
             select: {
               id: true,
               name: true,
+            },
+          },
+          _count: {
+            select: {
+              replies: true,
             },
           },
         },

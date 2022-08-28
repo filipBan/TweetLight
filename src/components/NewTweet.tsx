@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { trpc } from '@/utils/trpc'
 import { LoadingSpinner } from './LoadingSpinner'
 
-export const NewTweet = () => {
+export const NewTweet: FC<{ replyParentId?: string }> = ({ replyParentId }) => {
   const [value, setValue] = useState('')
   const utils = trpc.useContext()
 
@@ -29,7 +29,7 @@ export const NewTweet = () => {
           <LoadingSpinner />
         ) : (
           <button
-            onClick={() => mutate({ content: value })}
+            onClick={() => mutate({ content: value, replyParentId })}
             className="outline-none cursor-pointer h-10 w-24"
             disabled={isLoading}
           >
