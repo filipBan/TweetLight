@@ -52,7 +52,10 @@ export const Tweet: FC<{
       </div>
       {showReplyBox && (
         <div className="w-full mt-4">
-          <NewTweet replyParentId={tweet.id} />
+          <NewTweet
+            replyParentId={tweet.id}
+            onReplySubmitted={() => setShowReplyBox(false)}
+          />
         </div>
       )}
     </div>

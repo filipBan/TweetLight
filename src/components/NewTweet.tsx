@@ -2,7 +2,10 @@ import { FC, useState } from 'react'
 import { trpc } from '@/utils/trpc'
 import { LoadingSpinner } from './LoadingSpinner'
 
-export const NewTweet: FC<{ replyParentId?: string }> = ({ replyParentId }) => {
+export const NewTweet: FC<{
+  replyParentId?: string
+  onReplySubmitted?: () => void
+}> = ({ replyParentId, onReplySubmitted }) => {
   const [value, setValue] = useState('')
   const utils = trpc.useContext()
 
@@ -10,6 +13,7 @@ export const NewTweet: FC<{ replyParentId?: string }> = ({ replyParentId }) => {
     onSuccess() {
       utils.invalidateQueries(['tweet.getMyTweets'])
       setValue('')
+      onReplySubmitted?.()
     },
   })
 
