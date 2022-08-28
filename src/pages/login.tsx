@@ -1,13 +1,14 @@
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
 import { signIn } from 'next-auth/react'
 import { getTweetLightSession } from '@/utils/getTweetLightSession'
+import { Page } from '@/components/Page'
 
 const Login: NextPage = () => {
   return (
-    <>
+    <Page>
       Not signed in <br />
       <button onClick={() => signIn()}>Sign in</button>
-    </>
+    </Page>
   )
 }
 
